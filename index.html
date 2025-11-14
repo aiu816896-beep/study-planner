@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="StudyPlanner">
+    <title>Student Daily Planner</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>StudyPlanner</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-page="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tasks</span>
+                </li>
+                <li class="nav-item" data-page="analytics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </li>
+                <li class="nav-item" data-page="reports">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Reports</span>
+                </li>
+                <li class="nav-item" data-page="timetable">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </li>
+                <li class="nav-item" data-page="pomodoro">
+                    <i class="fas fa-clock"></i>
+                    <span>Pomodoro</span>
+                </li>
+                <li class="nav-item" data-page="notes">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Notes</span>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="streak-counter">
+                        <i class="fas fa-fire"></i>
+                        <span id="streakCount">0</span> Day Streak
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon study">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todayStudyHours">0h 0m</h3>
+                            <p>Study Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todayCompleted">0</h3>
+                            <p>Tasks Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todayPending">0</h3>
+                            <p>Tasks Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon productivity">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="productivityScore">0%</h3>
+                            <p>Productivity</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Today's Tasks</h2>
+                            <button class="btn btn-primary" id="addTaskBtn">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </div>
+                        <div class="tasks-list" id="todayTasksList">
+                            <!-- Tasks will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Daily Goal</h2>
+                        </div>
+                        <div class="goal-section">
+                            <input type="text" id="dailyGoalInput" placeholder="Set your goal for today..." class="goal-input">
+                            <div id="dailyGoalDisplay" class="goal-display"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div class="page" id="tasks">
+                <div class="tasks-header">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="study">📚 Study</button>
+                        <button class="filter-btn" data-filter="reading">📖 Reading</button>
+                        <button class="filter-btn" data-filter="notes">✍ Notes</button>
+                        <button class="filter-btn" data-filter="revision">🔁 Revision</button>
+                        <button class="filter-btn" data-filter="assignment">📝 Assignment</button>
+                        <button class="filter-btn" data-filter="test">⏳ Test Prep</button>
+                    </div>
+                </div>
+                <div class="all-tasks-list" id="allTasksList">
+                    <!-- All tasks will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div class="page" id="analytics">
+                <div class="analytics-controls">
+                    <select id="analyticsRange" class="analytics-select">
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Study Hours by Subject</h3>
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Daily Activity</h3>
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Task Completion Rate</h3>
+                        <canvas id="completionChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Category Distribution</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="reports">
+                <div class="reports-tabs">
+                    <button class="report-tab active" data-report="weekly">Weekly Report</button>
+                    <button class="report-tab" data-report="monthly">Monthly Report</button>
+                    <button class="report-tab" data-report="yearly">Yearly Report</button>
+                </div>
+                <div class="report-content" id="reportContent">
+                    <!-- Report data will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Timetable Page -->
+            <div class="page" id="timetable">
+                <div class="timetable-container">
+                    <h2>Weekly Timetable</h2>
+                    <table class="timetable" id="timetableGrid">
+                        <!-- Timetable will be generated dynamically -->
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pomodoro Page -->
+            <div class="page" id="pomodoro">
+                <div class="pomodoro-container">
+                    <div class="pomodoro-timer">
+                        <div class="timer-display" id="pomodoroDisplay">25:00</div>
+                        <div class="timer-controls">
+                            <button class="btn btn-large" id="pomodoroStart">Start</button>
+                            <button class="btn btn-large" id="pomodoroReset">Reset</button>
+                        </div>
+                        <div class="timer-settings">
+                            <label>
+                                Work Duration (min): 
+                                <input type="number" id="workDuration" value="25" min="1" max="60">
+                            </label>
+                            <label>
+                                Break Duration (min): 
+                                <input type="number" id="breakDuration" value="5" min="1" max="30">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pomodoro-stats">
+                        <h3>Today's Pomodoros: <span id="pomodoroCount">0</span></h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Page -->
+            <div class="page" id="notes">
+                <div class="notes-header">
+                    <button class="btn btn-primary" id="addNoteBtn">
+                        <i class="fas fa-plus"></i> New Note
+                    </button>
+                </div>
+                <div class="notes-grid" id="notesGrid">
+                    <!-- Notes will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="settings">
+                <div class="settings-container">
+                    <h2>Settings</h2>
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <label class="switch-label">
+                            <span>Daily Reminders</span>
+                            <input type="checkbox" id="dailyReminders" checked>
+                            <span class="switch"></span>
+                        </label>
+                        <label class="switch-label">
+                            <span>Revision Alerts</span>
+                            <input type="checkbox" id="revisionAlerts" checked>
+                            <span class="switch"></span>
+                        </label>
+                        <label class="switch-label">
+                            <span>Test Alerts</span>
+                            <input type="checkbox" id="testAlerts" checked>
+                            <span class="switch"></span>
+                        </label>
+                    </div>
+                    <div class="settings-section">
+                        <h3>Data</h3>
+                        <button class="btn" id="exportData">Export Data</button>
+                        <button class="btn" id="importData">Import Data</button>
+                        <button class="btn btn-danger" id="clearData">Clear All Data</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Task</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label>Task Title</label>
+                        <input type="text" id="taskTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="taskCategory" required>
+                            <option value="study">📚 Study</option>
+                            <option value="reading">📖 Reading</option>
+                            <option value="notes">✍ Notes Making</option>
+                            <option value="revision">🔁 Revision</option>
+                            <option value="assignment">📝 Assignment</option>
+                            <option value="test">⏳ Test Preparation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="taskSubject">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" id="taskDuration" min="1" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="taskDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="taskNotes" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Task</button>
+                        <button type="button" class="btn modal-close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Note</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="noteForm">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="noteTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" id="noteSubject">
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea id="noteContent" rows="10" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Note</button>
+                        <button type="button" class="btn modal-close">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        }
+
+        // Install prompt for mobile
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.createElement('button');
+            installBtn.textContent = '📱 Install App';
+            installBtn.className = 'btn btn-primary';
+            installBtn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+            installBtn.onclick = async () => {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.remove();
+                }
+                deferredPrompt = null;
+            };
+            document.body.appendChild(installBtn);
+        });
+    </script>
+</body>
+</html>
